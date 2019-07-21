@@ -239,11 +239,11 @@ objects:
       apiGroup: rbac.authorization.k8s.io
       kind: Role
       name: ${DATABASE_SERVICE_NAME}
-#redis-ha-service
+#redis-ha-readonly-service
   - apiVersion: v1
     kind: Service
     metadata:
-      name: ${DATABASE_SERVICE_NAME}
+      name: ${DATABASE_SERVICE_NAME}-readonly
       labels:
         app: ${DATABASE_SERVICE_NAME}
       annotations:
