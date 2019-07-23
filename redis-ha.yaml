@@ -57,7 +57,7 @@ objects:
       init.sh: |
         HOSTNAME="$(hostname)"
         INDEX="${HOSTNAME##*-}"
-        MASTER="$(redis-cli -h ${DATABASE_SERVICE_NAME} -p 26379 sentinel get-master-addr-by-name ${MASTER_GROUPNAME} | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')"
+        MASTER="$(redis-cli -h ${DATABASE_SERVICE_NAME}-readonly -p 26379 sentinel get-master-addr-by-name ${MASTER_GROUPNAME} | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')"
         MASTER_GROUP="${MASTER_GROUPNAME}"
         QUORUM="2"
         REDIS_CONF=/data/conf/redis.conf
