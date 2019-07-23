@@ -204,41 +204,6 @@ objects:
             echo "Server check failed with: $CHECK_SERVER"
             exit 1
         fi
-#redis-ha-serviceaccount---TODO------------
-  - apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      name: ${DATABASE_SERVICE_NAME}
-      labels:
-        app: ${DATABASE_SERVICE_NAME}
-#redis-ha-role
-  - apiVersion: rbac.authorization.k8s.io/v1
-    kind: Role
-    metadata:
-      name: ${DATABASE_SERVICE_NAME}
-      labels:
-        app: ${DATABASE_SERVICE_NAME}
-    rules:
-    - apiGroups:
-        - ""
-      resources:
-        - endpoints
-      verbs:
-        - get
-#redis-ha-rolebinding
-  - kind: RoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1
-    metadata:
-      name: ${DATABASE_SERVICE_NAME}
-      labels:
-        app: ${DATABASE_SERVICE_NAME}
-    subjects:
-    - kind: ServiceAccount
-      name: ${DATABASE_SERVICE_NAME}
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: ${DATABASE_SERVICE_NAME}
 #redis-ha-readonly-service
   - apiVersion: v1
     kind: Service
@@ -297,12 +262,6 @@ objects:
                       matchLabels:
                         app:  ${DATABASE_SERVICE_NAME}
                     topologyKey: failure-domain.beta.kubernetes.io/zone
-          securityContext:
-            #fsGroup: 1000
-            runAsNonRoot: true
-            #runAsUser: 1000
-    
-          serviceAccountName: ${DATABASE_SERVICE_NAME}
           initContainers:
           - name: config-init
             image: redis:5.0.5-alpine
